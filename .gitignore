@@ -1,0 +1,36 @@
+# --- תוצרי הידור וקבצי אובייקט ---
+*.exe
+*.out
+*.o
+*.obj
+*.a
+*.lib
+*.so
+*.dll
+
+# --- תיקיות בנייה ---
+build/
+bin/
+obj/
+Debug/
+Release/
+x64/
+x86/
+
+# --- הגדרות סביבת עבודה ---
+.vscode/
+.vs/
+*.suo
+*.user
+*.db
+*.opendb
+.idea/
+cmake-build-*/
+CMakeCache.txt
+CMakeFiles/
+Makefile
+
+# --- קבצי מערכת ויומני ריצה ---
+*.log
+.DS_Store
+Thumbs.db
