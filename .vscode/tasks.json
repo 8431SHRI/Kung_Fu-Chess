@@ -1,0 +1,41 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build project",
+            "type": "shell",
+            "command": "cl",
+            "args": [
+                "/EHsc",
+                "/std:c++17",
+                "main.cpp",
+                "engine/*.cpp",
+                "model/*.cpp",
+                "rules/*.cpp",
+                "realtime/*.cpp",
+                "config/*.cpp",
+                "view/*.cpp",
+                "input/*.cpp",
+                "/I.",
+                "/Iengine",
+                "/Imodel",
+                "/Irules",
+                "/Irealtime",
+                "/Iconfig",
+                "/Iview",
+                "/Iinput",
+                "/Fe:MyGame.exe",
+                "/link",
+                "/LIBPATH:C:\\opencv\\build\\x64\\vc16\\lib",
+                "opencv_world4120.lib"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$msCompile"
+            ]
+        }
+    ]
+}
