@@ -1,13 +1,23 @@
 #include "BoardRenderer.hpp"
 
-BoardRenderer::BoardRenderer(const std::string& boardPath)
+#include "GameConfig.hpp"
+#include "OpenCVConfig.hpp"
+
+#include <opencv2/imgproc.hpp>
+
+BoardRenderer::BoardRenderer(
+    const std::string& boardPath)
 {
     boardImage.read(
         boardPath,
-        {800, 800},
+        {
+            GameConfig::BOARD_WIDTH_PX,
+            GameConfig::BOARD_HEIGHT_PX
+        },
         false);
 
-    if (boardImage.get_mat().channels() == 3)
+    if (boardImage.get_mat().channels() ==
+        OpenCVConfig::RGB_CHANNELS)
     {
         cv::cvtColor(
             boardImage.get_mat(),
@@ -16,7 +26,8 @@ BoardRenderer::BoardRenderer(const std::string& boardPath)
     }
 }
 
-void BoardRenderer::drawBoard(Img& canvas)
+void BoardRenderer::drawBoard(
+    Img& canvas)
 {
     boardImage.get_mat().copyTo(
         canvas.get_mat());

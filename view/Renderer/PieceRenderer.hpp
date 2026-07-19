@@ -1,30 +1,30 @@
 #pragma once
 
-#include "ResourceManager.hpp"
-#include "PieceSnapshot.hpp"
 #include "Animation.hpp"
+#include "PieceSnapshot.hpp"
+#include "ResourceManager.hpp"
 #include "img.hpp"
+
 /*
  * @class PieceRenderer
- * @brief Responsible for rendering an individual game piece and its animation.
- * Purpose: Selects animation, calculates position, and draws on the canvas.
- * Created by: Renderer | Used by: Renderer for each game piece.
- * Functions: PieceRenderer() (initialization with ResourceManager), drawPiece() (draws piece and current frame).
+ * @brief Draws a single game piece including movement animation.
+ * Purpose: Selects the correct animation and computes the piece position.
+ * Created by: Renderer | Used by: Renderer.
  */
+
 class PieceRenderer
 {
 private:
 
     ResourceManager& resources;
 
-    static constexpr int CELL_SIZE = 100;
-
 public:
 
-    explicit PieceRenderer(ResourceManager& resourceManager);
+    explicit PieceRenderer(
+        ResourceManager& resourceManager);
 
     void drawPiece(
-    const PieceSnapshot& piece,
-    Img& canvas,
-    int elapsedMs);
+        const PieceSnapshot& piece,
+        Img& canvas,
+        int elapsedMs);
 };

@@ -1,72 +1,57 @@
-// #include "Renderer.hpp"
-
-// Renderer::Renderer(
-//     ResourceManager& resources,
-//     const std::string& boardPath)
-//     :
-//     boardRenderer(boardPath),
-//     pieceRenderer(resources)
-// {
-// }
-
-// void Renderer::render(
-//     const GameSnapshot& snapshot,
-//     Img& canvas,
-//     int animationFrame)
-// {
-//     boardRenderer.drawBoard(canvas);
-
-//     for (const PieceSnapshot& piece : snapshot.pieces)
-//     {
-//         pieceRenderer.drawPiece(
-//             piece,
-//             canvas,
-//             animationFrame);
-//     }
-// }
 #include "Renderer.hpp"
-#include <iostream>
+
+#include "GameConfig.hpp"
+#include "GuiConfig.hpp"
+
+#include <opencv2/imgproc.hpp>
 
 Renderer::Renderer(
-    ResourceManager &resources,
-    const std::string &boardPath)
-    : boardRenderer(boardPath),
-      pieceRenderer(resources)
+    ResourceManager& resources,
+    const std::string& boardPath)
+    :
+    boardRenderer(boardPath),
+    pieceRenderer(resources)
 {
 }
 
 void Renderer::render(
-    const GameSnapshot &snapshot,
-    const SelectionModel &selection,
-    Img &canvas)
+    const GameSnapshot& snapshot,
+    const SelectionModel& selection,
+    Img& canvas,
+    int elapsedMs)
 {
-
     boardRenderer.drawBoard(canvas);
 
     selectionRenderer.draw(
         selection,
         canvas);
 
-    for (const auto &piece : snapshot.pieces)
+    for (const auto& piece : snapshot.pieces)
     {
         pieceRenderer.drawPiece(
             piece,
-            canvas);
+            canvas,
+            elapsedMs);
     }
 
     if (snapshot.gameOver)
     {
         cv::rectangle(
             canvas.get_mat(),
-            cv::Rect(0, 0, 800, 800),
-            cv::Scalar(0, 0, 0, 170),
+            cv::Rect(
+                0,
+                0,
+                GameConfig::BOARD_WIDTH_PX,
+                GameConfig::BOARD_HEIGHT_PX),
+            GuiConfig::GAME_OVER_OVERLAY_COLOR,
             -1);
+
         canvas.put_text(
-            "GAME OVER",
-            120,
-            420,
-            3.5,
-            cv::Scalar(255, 255, 255, 255),
-            6);
+            GuiConfig::GAME_OVER_TEXT,
+            GuiConfig::GAME_OVER_TEXT_X,
+            GuiConfig::GAME_OVER_TEXT_Y,
+            GuiConfig::GAME_OVER_FONT_SCALE,
+            GuiConfig::GAME_OVER_TEXT_COLOR,
+            GuiConfig::GAME_OVER_FONT_THICKNESS);
     }
 }

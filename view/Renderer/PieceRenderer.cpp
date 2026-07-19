@@ -1,24 +1,29 @@
 #include "PieceRenderer.hpp"
 
-PieceRenderer::PieceRenderer(ResourceManager &resourceManager)
-    : resources(resourceManager)
+#include "GameConfig.hpp"
+
+PieceRenderer::PieceRenderer(
+    ResourceManager& resourceManager)
+    :
+    resources(resourceManager)
 {
 }
 
 void PieceRenderer::drawPiece(
-    const PieceSnapshot &piece,
-    Img &canvas,
+    const PieceSnapshot& piece,
+    Img& canvas,
     int elapsedMs)
 {
-    Animation &animation =
+    Animation& animation =
         resources.getAnimation(
             piece.type,
             piece.side,
             piece.state,
-            CELL_SIZE);
+            GameConfig::CELL_SIZE_PX);
 
     std::shared_ptr<Img> image =
-        animation.getFrameByTime(elapsedMs);
+        animation.getFrameByTime(
+            elapsedMs);
 
     double x;
     double y;
@@ -26,32 +31,40 @@ void PieceRenderer::drawPiece(
     if (piece.isMoving)
     {
         double startX =
-            piece.motionSource.getCol() * CELL_SIZE;
+            piece.motionSource.getCol() *
+            GameConfig::CELL_SIZE_PX;
 
         double startY =
-            piece.motionSource.getRow() * CELL_SIZE;
+            piece.motionSource.getRow() *
+            GameConfig::CELL_SIZE_PX;
 
         double endX =
-            piece.motionDestination.getCol() * CELL_SIZE;
+            piece.motionDestination.getCol() *
+            GameConfig::CELL_SIZE_PX;
 
         double endY =
-            piece.motionDestination.getRow() * CELL_SIZE;
+            piece.motionDestination.getRow() *
+            GameConfig::CELL_SIZE_PX;
 
         x =
             startX +
-            (endX - startX) * piece.progress;
+            (endX - startX) *
+            piece.progress;
 
         y =
             startY +
-            (endY - startY) * piece.progress;
+            (endY - startY) *
+            piece.progress;
     }
     else
     {
         x =
-            piece.boardPosition.getCol() * CELL_SIZE;
+            piece.boardPosition.getCol() *
+            GameConfig::CELL_SIZE_PX;
 
         y =
-            piece.boardPosition.getRow() * CELL_SIZE;
+            piece.boardPosition.getRow() *
+            GameConfig::CELL_SIZE_PX;
     }
 
     image->draw_transparent(

@@ -6,13 +6,14 @@
 #include "Renderer.hpp"
 #include "GameController.hpp"
 #include "SelectionModel.hpp"
+
 /*
  * @class Window
- * @brief Manages the game window and the render loop.
- * Purpose: Manages OpenCV window, handles mouse events, and displays the canvas.
- * Created by: main() | Used by: Main game loop.
- * Functions: Window() (initialization), render() (draw to screen), show() (display), getCanvas() (retrieve), mouseCallback() (input events).
+ * @brief Manages the OpenCV game window and mouse events.
+ * Purpose: Displays the rendered frame and forwards user clicks to the controller.
+ * Created by: main().
  */
+
 class Window
 {
 private:
@@ -20,7 +21,9 @@ private:
     Img canvas;
 
     Renderer& renderer;
+
     SelectionModel& selection;
+
     GameController& controller;
 
     static Window* instance;
@@ -35,12 +38,13 @@ private:
 public:
 
     Window(
-    Renderer& renderer,
-    GameController& controller,
-    SelectionModel& selection);
+        Renderer& renderer,
+        GameController& controller,
+        SelectionModel& selection);
 
     void render(
-        const GameSnapshot& snapshot);
+        const GameSnapshot& snapshot,
+        int elapsedMs);
 
     void show();
 

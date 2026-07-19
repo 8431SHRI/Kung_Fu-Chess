@@ -3,13 +3,14 @@
 #include <string>
 
 #include "img.hpp"
+
 /*
  * @class BoardRenderer
- * @brief Responsible for rendering the chessboard image onto the canvas.
- * Purpose: Loads the board image once and draws it on every screen refresh.
- * Created by: Renderer | Used by: Renderer on every render cycle.
- * Functions: BoardRenderer() (load from disk), drawBoard() (draw on canvas).
+ * @brief Responsible for drawing the game board background.
+ * Purpose: Loads the board image once and copies it onto the rendering canvas.
+ * Created by: Renderer | Used by: Renderer before drawing pieces.
  */
+
 class BoardRenderer
 {
 private:
@@ -18,7 +19,9 @@ private:
 
 public:
 
-    explicit BoardRenderer(const std::string& boardPath);
+    explicit BoardRenderer(
+        const std::string& boardPath);
 
-    void drawBoard(Img& canvas);
+    void drawBoard(
+        Img& canvas);
 };

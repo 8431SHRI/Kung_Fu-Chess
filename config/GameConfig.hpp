@@ -1,23 +1,20 @@
 #pragma once
-#include <unordered_map>
-#include "Piece.hpp" 
 
-/**
- * @class GameConfig
- * @brief מחלקת הגדרות מרכזית. כל המשתנים ניתנים לשינוי דינמי בזמן ריצה.
- */
-class GameConfig {
+class GameConfig
+{
 public:
-    // הגדרות זמנים ומידות
+
+    static int BOARD_ROWS;
+
+    static int BOARD_COLS;
+
     static int CELL_SIZE_PX;
+
     static int DEFAULT_TRAVEL_TIME_MS;
+
     static int INITIAL_TIME_MS;
 
-    // הגדרות תווים ופורמט (כעת כמשתנים רגילים)
-    static char EMPTY_CELL;
-    static char SIDE_WHITE;
-    static char SIDE_BLACK;
+    static int BOARD_WIDTH_PX;
 
-    // מפת הכלים (כעת כמשתנה רגיל שניתן לעדכן בזמן ריצה)
-    static std::unordered_map<char, PieceType> TYPE_MAP;
+    static int BOARD_HEIGHT_PX;
 };

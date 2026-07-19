@@ -1,25 +1,35 @@
 #include "Window.hpp"
 
-#include <opencv2/highgui.hpp>
+#include "AssetsConfig.hpp"
+#include "GameConfig.hpp"
+#include "OpenCVConfig.hpp"
 
-Window *Window::instance = nullptr;
+#include <opencv2/highgui.hpp>
+#include <opencv2/imgproc.hpp>
+
+Window* Window::instance = nullptr;
 
 Window::Window(
-    Renderer &r,
-    GameController &c,
-    SelectionModel &s)
-    : renderer(r),
-      controller(c),
-      selection(s)
+    Renderer& r,
+    GameController& c,
+    SelectionModel& s)
+    :
+    renderer(r),
+    selection(s),
+    controller(c)
 {
     instance = this;
 
     canvas.read(
-        "assets/board.png",
-        {800, 800},
+        AssetsConfig::BOARD_IMAGE,
+        {
+            GameConfig::BOARD_WIDTH_PX,
+            GameConfig::BOARD_HEIGHT_PX
+        },
         false);
 
-    if (canvas.get_mat().channels() == 3)
+    if (canvas.get_mat().channels() ==
+        OpenCVConfig::RGB_CHANNELS)
     {
         cv::cvtColor(
             canvas.get_mat(),
@@ -27,10 +37,11 @@ Window::Window(
             cv::COLOR_BGR2BGRA);
     }
 
-    cv::namedWindow("Kung Fu Chess");
+    cv::namedWindow(
+        AssetsConfig::WINDOW_TITLE);
 
     cv::setMouseCallback(
-        "Kung Fu Chess",
+        AssetsConfig::WINDOW_TITLE,
         Window::mouseCallback,
         nullptr);
 }
@@ -40,9 +51,8 @@ void Window::mouseCallback(
     int x,
     int y,
     int,
-    void *)
+    void*)
 {
-    
     if (event != cv::EVENT_LBUTTONDOWN)
         return;
 
@@ -53,35 +63,24 @@ void Window::mouseCallback(
 }
 
 void Window::render(
-    const GameSnapshot &snapshot)
+    const GameSnapshot& snapshot,
+    int elapsedMs)
 {
-    canvas.read(
-        "assets/board.png",
-        {800, 800},
-        false);
-
-    if (canvas.get_mat().channels() == 3)
-    {
-        cv::cvtColor(
-            canvas.get_mat(),
-            canvas.get_mat(),
-            cv::COLOR_BGR2BGRA);
-    }
-
     renderer.render(
         snapshot,
         selection,
-        canvas);
+        canvas,
+        elapsedMs);
 }
 
 void Window::show()
 {
     cv::imshow(
-        "Kung Fu Chess",
+        AssetsConfig::WINDOW_TITLE,
         canvas.get_mat());
 }
 
-Img &Window::getCanvas()
+Img& Window::getCanvas()
 {
     return canvas;
 }
