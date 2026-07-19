@@ -4,11 +4,10 @@
 #include "PieceSnapshot.hpp"
 /*
  * @struct GameSnapshot
- * @brief מייצג תמונת מצב מלאה של המשחק ברגע נתון.
- * מטרה: משמש להעברת המידע הדרוש ל-Renderer מבלי לתת לו גישה ישירה למנוע המשחק.
- * מכיל: גודל הלוח, רשימת הכלים ומצבם, סטטוס סיום משחק, כלי נבחר ומהלכיו החוקיים.
- * יוצר: GameEngine::snapshot().
- * משתמשים: Renderer, PieceRenderer, SelectionRenderer.
+ * @brief Represents a complete snapshot of the game state at a given moment.
+ * Purpose: Used to pass necessary information to the Renderer without granting direct access to the Game Engine.
+ * Contains: Board size, list of pieces and their states, game-over status, selected piece, and its legal moves.
+ * Created by: GameEngine::snapshot() | Used by: Renderer, PieceRenderer, SelectionRenderer.
  */
 struct GameSnapshot
 {

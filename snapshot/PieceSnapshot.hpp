@@ -4,11 +4,10 @@
 #include "Position.hpp"
 /*
  * @struct PieceSnapshot
- * @brief מייצג צילום מצב של כלי בודד לצורך ציורו על המסך.
- * מטרה: שמירת נתונים גרפיים של כלי מסוים ללא גישה ישירה לאובייקט ה-Piece במודל.
- * מכיל: זהות הכלי, סוג וצבע, מצב אנימציה, מיקום בלוח, ונתוני תנועה לצורך החלקה.
- * יוצר: GameEngine::snapshot().
- * משתמשים: PieceRenderer.
+ * @brief Represents a snapshot of an individual piece for screen rendering.
+ * Purpose: Stores graphical data of a specific piece without direct access to the Piece model object.
+ * Contains: Piece identity, type and color, animation state, board position, and motion data for interpolation.
+ * Created by: GameEngine::snapshot() | Used by: PieceRenderer.
  */
 struct PieceSnapshot
 {

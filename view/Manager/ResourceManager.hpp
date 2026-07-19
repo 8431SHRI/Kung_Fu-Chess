@@ -7,11 +7,11 @@
 #include "Animation.hpp"
 #include "Piece.hpp"
 /*
- * @class ResourceManager
- * @brief מנהל את כל משאבי הגרפיקה של המשחק.
- * מטרה: טעינת תמונות/אנימציות/קובצי הגדרות מהדיסק ושמירתם בזיכרון לשימוש חוזר.
- * יוצר: main() | משתמשים: PieceRenderer לקבלת אנימציות.
- * פונקציות: getAnimation() (שליפת מטמון), load(Animation/Metadata) (טעינה), בניית נתיבים, והמרות (piece/side/stateToString).
+ * @class Renderer
+ * @brief Responsible for drawing the entire game screen.
+ * Purpose: Centralizes all drawing operations: board, selection markers, pieces, and end-game messages.
+ * Created by: main() | Used by: Window on each refresh.
+ * Functions: Renderer() (initialization of drawing components), render() (draws current game state).
  */
 class ResourceManager
 {

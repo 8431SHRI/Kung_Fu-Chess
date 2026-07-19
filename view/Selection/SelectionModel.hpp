@@ -7,10 +7,10 @@
 #include "Position.hpp"
 /*
  * @class SelectionModel
- * @brief שומר את מצב הבחירה הנוכחי של המשתמש.
- * מטרה: ניהול הכלי הנבחר והמהלכים החוקיים שלו לצורך תצוגה.
- * יוצר: main() | משתמשים: GameController (עדכון), SelectionRenderer/Window (קריאה).
- * פונקציות: clear() (ניקוי), select() (בחירה חדשה), hasSelection/getSelection() (שאילתה), set/getLegalMoves() (ניהול מהלכים).
+ * @brief Maintains the user's current selection state.
+ * Purpose: Manages the selected piece and its legal moves for display purposes.
+ * Created by: main() | Used by: GameController (updating), SelectionRenderer/Window (reading).
+ * Functions: clear() (reset), select() (new selection), hasSelection/getSelection() (query), set/getLegalMoves() (moves management).
  */
 class SelectionModel
 {

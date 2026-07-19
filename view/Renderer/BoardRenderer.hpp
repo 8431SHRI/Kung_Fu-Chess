@@ -5,10 +5,10 @@
 #include "img.hpp"
 /*
  * @class BoardRenderer
- * @brief אחראי על ציור תמונת לוח השחמט על הקנבס.
- * מטרה: טעינת תמונת הלוח פעם אחת וציורה בכל רענון מסך.
- * יוצר: Renderer | משתמשים: Renderer בכל מחזור ציור.
- * פונקציות: BoardRenderer() (טעינה מהדיסק), drawBoard() (ציור על הקנבס).
+ * @brief Responsible for rendering the chessboard image onto the canvas.
+ * Purpose: Loads the board image once and draws it on every screen refresh.
+ * Created by: Renderer | Used by: Renderer on every render cycle.
+ * Functions: BoardRenderer() (load from disk), drawBoard() (draw on canvas).
  */
 class BoardRenderer
 {

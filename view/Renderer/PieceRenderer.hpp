@@ -6,10 +6,10 @@
 #include "img.hpp"
 /*
  * @class PieceRenderer
- * @brief אחראי על ציור כלי משחק בודד והאנימציה שלו.
- * מטרה: בחירת אנימציה, חישוב מיקום וציור על הקנבס.
- * יוצר: Renderer | משתמשים: Renderer עבור כל כלי במשחק.
- * פונקציות: PieceRenderer() (אתחול עם ResourceManager), drawPiece() (ציור הכלי והפריים).
+ * @brief Responsible for rendering an individual game piece and its animation.
+ * Purpose: Selects animation, calculates position, and draws on the canvas.
+ * Created by: Renderer | Used by: Renderer for each game piece.
+ * Functions: PieceRenderer() (initialization with ResourceManager), drawPiece() (draws piece and current frame).
  */
 class PieceRenderer
 {

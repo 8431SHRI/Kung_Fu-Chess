@@ -8,12 +8,11 @@
 #include "img.hpp"
 /*
  * @class Animation
- * @brief מנהל רצף של תמונות (Frames) המהוות אנימציה של כלי.
- * מטרה: טעינה ושמירת תמונות, ובחירת הפריים להצגה בהתאם לזמן שעבר.
- * אחריות: ניהול פריימים, קביעת מהירות (FPS), תמיכה ב-Loop, ובחירת פריים לפי זמן.
- * יוצר: ResourceManager | משתמשים: PieceRenderer.
- * פונקציות: addFrame(הוספה), set/getFramesPerSecond(מהירות), set/isLoop(חזרה),
- *           empty/frameCount(בדיקה), getFrame/ByTime/List(שליפת פריים).
+ * @brief Manages a sequence of frames that constitute a piece's animation.
+ * Purpose: Handles loading, storing, and selecting frames to display based on elapsed time.
+ * Responsibility: Frame management, setting FPS, loop support, and frame retrieval by time.
+ * Created by: ResourceManager | Used by: PieceRenderer.
+ * Functions: addFrame(), set/getFramesPerSecond(), set/isLoop(), empty/frameCount(), getFrameByTime/List().
  */
 class Animation
 {

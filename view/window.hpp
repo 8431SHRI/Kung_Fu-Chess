@@ -8,10 +8,10 @@
 #include "SelectionModel.hpp"
 /*
  * @class Window
- * @brief מנהל את חלון המשחק ואת מחזור הציור.
- * מטרה: ניהול חלון OpenCV, טיפול באירועי עכבר, והצגת הקנבס.
- * יוצר: main() | משתמשים: לולאת המשחק הראשית (main).
- * פונקציות: Window() (אתחול), render() (ציור למסך), show() (תצוגה), getCanvas() (שליפה), mouseCallback() (אירועי קלט).
+ * @brief Manages the game window and the render loop.
+ * Purpose: Manages OpenCV window, handles mouse events, and displays the canvas.
+ * Created by: main() | Used by: Main game loop.
+ * Functions: Window() (initialization), render() (draw to screen), show() (display), getCanvas() (retrieve), mouseCallback() (input events).
  */
 class Window
 {
