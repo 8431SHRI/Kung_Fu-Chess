@@ -6,7 +6,13 @@
 #include <nlohmann/json.hpp>
 #include "Animation.hpp"
 #include "Piece.hpp"
-
+/*
+ * @class ResourceManager
+ * @brief מנהל את כל משאבי הגרפיקה של המשחק.
+ * מטרה: טעינת תמונות/אנימציות/קובצי הגדרות מהדיסק ושמירתם בזיכרון לשימוש חוזר.
+ * יוצר: main() | משתמשים: PieceRenderer לקבלת אנימציות.
+ * פונקציות: getAnimation() (שליפת מטמון), load(Animation/Metadata) (טעינה), בניית נתיבים, והמרות (piece/side/stateToString).
+ */
 class ResourceManager
 {
 private:

@@ -6,7 +6,15 @@
 #include <algorithm>
 
 #include "img.hpp"
-
+/*
+ * @class Animation
+ * @brief מנהל רצף של תמונות (Frames) המהוות אנימציה של כלי.
+ * מטרה: טעינה ושמירת תמונות, ובחירת הפריים להצגה בהתאם לזמן שעבר.
+ * אחריות: ניהול פריימים, קביעת מהירות (FPS), תמיכה ב-Loop, ובחירת פריים לפי זמן.
+ * יוצר: ResourceManager | משתמשים: PieceRenderer.
+ * פונקציות: addFrame(הוספה), set/getFramesPerSecond(מהירות), set/isLoop(חזרה),
+ *           empty/frameCount(בדיקה), getFrame/ByTime/List(שליפת פריים).
+ */
 class Animation
 {
 private:

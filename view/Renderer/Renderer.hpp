@@ -7,6 +7,13 @@
 #include "ResourceManager.hpp"
 #include "GameSnapshot.hpp"
 #include "SelectionRenderer.hpp"
+/*
+ * @class Renderer
+ * @brief אחראי על ציור כל המסך של המשחק.
+ * מטרה: ריכוז כל פעולות הציור: לוח, סימוני בחירה, כלים והודעות סיום.
+ * יוצר: main() | משתמשים: Window בכל רענון מסך.
+ * פונקציות: Renderer() (אתחול רכיבי ציור), render() (ציור כל מצב המשחק).
+ */
 class Renderer
 {
 private:

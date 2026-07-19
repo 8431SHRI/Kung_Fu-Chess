@@ -6,6 +6,13 @@
 #include "Renderer.hpp"
 #include "GameController.hpp"
 #include "SelectionModel.hpp"
+/*
+ * @class Window
+ * @brief מנהל את חלון המשחק ואת מחזור הציור.
+ * מטרה: ניהול חלון OpenCV, טיפול באירועי עכבר, והצגת הקנבס.
+ * יוצר: main() | משתמשים: לולאת המשחק הראשית (main).
+ * פונקציות: Window() (אתחול), render() (ציור למסך), show() (תצוגה), getCanvas() (שליפה), mouseCallback() (אירועי קלט).
+ */
 class Window
 {
 private:

@@ -5,7 +5,13 @@
 #include <vector>
 
 #include "Position.hpp"
-
+/*
+ * @class SelectionModel
+ * @brief שומר את מצב הבחירה הנוכחי של המשתמש.
+ * מטרה: ניהול הכלי הנבחר והמהלכים החוקיים שלו לצורך תצוגה.
+ * יוצר: main() | משתמשים: GameController (עדכון), SelectionRenderer/Window (קריאה).
+ * פונקציות: clear() (ניקוי), select() (בחירה חדשה), hasSelection/getSelection() (שאילתה), set/getLegalMoves() (ניהול מהלכים).
+ */
 class SelectionModel
 {
 private:
