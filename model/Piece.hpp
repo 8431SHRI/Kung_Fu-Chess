@@ -45,8 +45,10 @@ public:
     void setState(PieceState newState) { state = newState; } 
     void setType(PieceType newType) { type = newType; }
     
-    virtual std::string toCanonicalString() const {
-        std::string sideChar = (getSide() == Side::WHITE) ? "w" : "b";
-        return sideChar + typeToString(getType());
-    }
+    virtual std::string toCanonicalString() const;
+    static std::string getTypeFolderName(PieceType type);
+
+    static std::string getSideFolderName(Side side);
+
+    static std::string getStateFolderName(PieceState state);
 };

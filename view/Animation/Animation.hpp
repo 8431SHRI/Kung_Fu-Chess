@@ -4,7 +4,7 @@
 #include <memory>
 #include <stdexcept>
 #include <algorithm>
-
+#include "AnimationConfig.hpp"
 #include "img.hpp"
 /*
  * @class Animation
@@ -17,15 +17,15 @@
 class Animation
 {
 private:
-
     std::vector<std::shared_ptr<Img>> frames;
 
-    int framesPerSecond = 6;
+    int framesPerSecond =
+        AnimationConfig::DEFAULT_FRAMES_PER_SECOND;
 
-    bool loop = true;
+    bool loop =
+        AnimationConfig::DEFAULT_LOOP;
 
 public:
-
     Animation() = default;
 
     void addFrame(std::shared_ptr<Img> frame)
@@ -104,7 +104,7 @@ public:
         return frames[frame];
     }
 
-    const std::vector<std::shared_ptr<Img>>& getFrames() const
+    const std::vector<std::shared_ptr<Img>> &getFrames() const
     {
         return frames;
     }

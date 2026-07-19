@@ -17,3 +17,15 @@ int GameConfig::BOARD_WIDTH_PX =
 int GameConfig::BOARD_HEIGHT_PX =
     GameConfig::BOARD_ROWS *
     GameConfig::CELL_SIZE_PX;
+
+char GameConfig::SIDE_WHITE = 'w';
+char GameConfig::SIDE_BLACK = 'b';
+
+std::unordered_map<char, PieceType> GameConfig::TYPE_MAP = {
+    {'K', PieceType::KING},
+    {'Q', PieceType::QUEEN},
+    {'R', PieceType::ROOK},
+    {'B', PieceType::BISHOP},
+    {'N', PieceType::KNIGHT},
+    {'P', PieceType::PAWN}
+};

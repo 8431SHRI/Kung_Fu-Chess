@@ -15,8 +15,5 @@ std::string AssetsConfig::IMAGE_EXTENSION =
 std::string AssetsConfig::BOARD_IMAGE =
     "assets/board.png";
 
-std::string AssetsConfig::BOARD_IMAGE =
-    "assets/board.png";
-
 const char* AssetsConfig::WINDOW_TITLE =
     "Kung Fu Chess";

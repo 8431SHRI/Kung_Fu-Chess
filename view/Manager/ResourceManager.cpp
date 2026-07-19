@@ -1,9 +1,12 @@
 #include "ResourceManager.hpp"
 
-#include <filesystem>
+#include "AssetsConfig.hpp"
+
 #include <algorithm>
-#include <iostream>
+#include <filesystem>
 #include <fstream>
+#include <iostream>
+
 #include <nlohmann/json.hpp>
 
 using json = nlohmann::json;
@@ -14,46 +17,6 @@ ResourceManager::ResourceManager(const std::string& assetsFolder)
 {
 }
 
-std::string ResourceManager::pieceToString(PieceType type) const
-{
-    switch (type)
-    {
-    case PieceType::KING:   return "king";
-    case PieceType::QUEEN:  return "queen";
-    case PieceType::ROOK:   return "rook";
-    case PieceType::BISHOP: return "bishop";
-    case PieceType::KNIGHT: return "knight";
-    case PieceType::PAWN:   return "pawn";
-    }
-
-    return "";
-}
-
-std::string ResourceManager::sideToString(Side side) const
-{
-    return side == Side::WHITE ? "white" : "black";
-}
-
-std::string ResourceManager::stateToString(PieceState state) const
-{
-    switch (state)
-    {
-    case PieceState::IDLE:
-        return "idle";
-
-    case PieceState::MOVING:
-        return "move";
-
-    case PieceState::AIRBORNE:
-        return "jump";
-
-    case PieceState::CAPTURED:
-        return "captured";
-    }
-
-    return "idle";
-}
-
 std::string ResourceManager::buildFolder(
     PieceType type,
     Side side,
@@ -61,26 +24,17 @@ std::string ResourceManager::buildFolder(
 {
     fs::path path = assetsPath;
 
-    path /= "pieces";
-    path /= sideToString(side);
-    path /= pieceToString(type);
-    path /= stateToString(state);
-    path /= "sprites";
+    path /= AssetsConfig::PIECES_FOLDER;
+
+    path /= Piece::getSideFolderName(side);
+
+    path /= Piece::getTypeFolderName(type);
+
+    path /= Piece::getStateFolderName(state);
+
+    path /= AssetsConfig::SPRITES_FOLDER;
 
     return path.string();
-}
-
-std::string ResourceManager::buildKey(
-    PieceType type,
-    Side side,
-    PieceState state,
-    int size) const
-{
-    return
-        pieceToString(type) + "_" +
-        sideToString(side) + "_" +
-        stateToString(state) + "_" +
-        std::to_string(size);
 }
 
 Animation ResourceManager::loadAnimation(
@@ -91,7 +45,10 @@ Animation ResourceManager::loadAnimation(
 {
     Animation animation;
 
-    fs::path folder = buildFolder(type, side, state);
+    fs::path folder = buildFolder(
+        type,
+        side,
+        state);
 
     if (!fs::exists(folder))
     {
@@ -104,23 +61,29 @@ Animation ResourceManager::loadAnimation(
 
     for (const auto& entry : fs::directory_iterator(folder))
     {
-        if (entry.path().extension() == ".png")
+        if (entry.path().extension() ==
+            AssetsConfig::IMAGE_EXTENSION)
         {
             files.push_back(entry.path());
         }
     }
 
-    std::sort(files.begin(), files.end());
+    std::sort(
+        files.begin(),
+        files.end());
+
     loadAnimationMetadata(
-    animation,
-    folder);
+        animation,
+        folder);
+
     for (const auto& file : files)
     {
-        auto image = std::make_shared<Img>();
+        auto image =
+            std::make_shared<Img>();
 
         image->read(
             file.string(),
-            { size, size },
+            {size, size},
             false);
 
         animation.addFrame(image);
@@ -135,27 +98,40 @@ Animation& ResourceManager::getAnimation(
     PieceState state,
     int size)
 {
-    std::string key =
-        buildKey(type, side, state, size);
+    AnimationKey key
+    {
+        type,
+        side,
+        state,
+        size
+    };
 
-    auto it = animationCache.find(key);
+    auto it =
+        animationCache.find(key);
 
     if (it != animationCache.end())
     {
         return it->second;
     }
 
-    animationCache[key] =
-        loadAnimation(type, side, state, size);
+    animationCache.emplace(
+        key,
+        loadAnimation(
+            type,
+            side,
+            state,
+            size));
 
-    return animationCache[key];
+    return animationCache.at(key);
 }
 
 void ResourceManager::loadAnimationMetadata(
     Animation& animation,
     const fs::path& folder)
 {
-    fs::path jsonFile = folder.parent_path() / "config.json";
+    fs::path jsonFile =
+        folder.parent_path() /
+        AssetsConfig::CONFIG_FILE;
 
     if (!fs::exists(jsonFile))
     {

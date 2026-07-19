@@ -15,7 +15,5 @@ public:
 
     static std::string BOARD_IMAGE;
 
-    static std::string BOARD_IMAGE;
-
     static const char *WINDOW_TITLE;
 };
