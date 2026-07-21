@@ -73,15 +73,6 @@ GameSnapshot GameEngine::snapshot() const
                     activeMotion->getProgress(
                         currentTimeMs);
             }
-            if (ps.isMoving)
-            {
-                std::cout
-                    << "Moving piece "
-                    << ps.id
-                    << " progress="
-                    << ps.progress
-                    << std::endl;
-            }
 
             snap.pieces.push_back(ps);
         }

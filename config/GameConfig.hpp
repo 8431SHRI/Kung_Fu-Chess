@@ -23,4 +23,7 @@ public:
     static std::unordered_map<char, PieceType> TYPE_MAP;
     static char SIDE_WHITE;
     static char SIDE_BLACK;
+    static constexpr int SHORT_REST_TIME_MS = 500;
+
+    static constexpr int LONG_REST_TIME_MS = 1000;
 };

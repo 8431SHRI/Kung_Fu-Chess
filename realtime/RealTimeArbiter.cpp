@@ -4,30 +4,66 @@
 #include <cmath>
 #include <algorithm>
 
-// המימוש החדש: הארביטר הוא "המומחה" שמחשב את זמן התנועה
-void RealTimeArbiter::startMotion(std::shared_ptr<Piece> piece, Position source, Position destination, int startTime)
+void RealTimeArbiter::startMotion(
+    std::shared_ptr<Piece> piece,
+    Position source,
+    Position destination,
+    int startTime)
 {
-    // 1. חישוב זמן התנועה עבר לכאן
+    if (piece->getState() != PieceState::IDLE)
+    {
+        return;
+    }
+    // חישוב מרחק התנועה
     int rowDiff = std::abs(destination.getRow() - source.getRow());
     int colDiff = std::abs(destination.getCol() - source.getCol());
-    int distance = std::max(rowDiff, colDiff);
-    int travelTime = distance * GameConfig::DEFAULT_TRAVEL_TIME_MS;
 
-    // 2. עדכון המצב והתחלת התנועה
+    int distance = std::max(rowDiff, colDiff);
+
+    // קריאת נתוני הפיזיקה מה-JSON
+    PiecePhysics &physics =
+        physicsManager.getPhysics(
+            piece->getType(),
+            piece->getSide(),
+            PieceState::MOVING);
+
+    double speed = physics.speedCellsPerSecond;
+
+    if (speed <= 0.0)
+    {
+        throw std::runtime_error("Invalid movement speed");
+    }
+
+    // חישוב זמן התנועה
+    int travelTime =
+        static_cast<int>((distance / speed) * 1000.0);
+
+    // התחלת התנועה
     piece->setState(PieceState::MOVING);
-    activeMotion.emplace(piece, source, destination, startTime, travelTime);
+
+    activeMotion.emplace(
+        piece,
+        source,
+        destination,
+        startTime,
+        travelTime,
+        physics.nextState);
 }
 
 // ניהול הזמן והבדיקה האם פעולות בזמן אמת הגיעו לסיומן
 void RealTimeArbiter::advanceTime(int currentTime, GameEngine &engine)
 {
     handleMotionLogic(currentTime, engine);
+
     handleJumpLogic(currentTime);
+
+    handleStateTimerLogic(currentTime);
 }
 
 // ניהול תהליך התנועה (Motion)
 void RealTimeArbiter::handleMotionLogic(int currentTime, GameEngine &engine)
 {
+    
     if (activeMotion.has_value() && activeMotion->hasArrived(currentTime))
     {
         resolveMotion(engine);
@@ -85,23 +121,36 @@ void RealTimeArbiter::executeStandardMove(GameEngine &engine)
     }
 
     // 3. עדכון מיקום הכלי בלוח
-    board.movePiece(activeMotion->source,
-                    destination);
+    board.movePiece(
+        activeMotion->source,
+        destination);
 
     handlePawnPromotion(
         movingPiece,
         destination);
 
-    movingPiece->setState(
-        PieceState::IDLE);
+    PiecePhysics &physics =
+        physicsManager.getPhysics(
+            movingPiece->getType(),
+            movingPiece->getSide(),
+            PieceState::MOVING);
+
+    handleNextState(
+        movingPiece,
+        physics,
+        engine.getCurrentTime());
 }
 
 // טיפול מיוחד במקרה של אכילה תוך כדי קפיצה
-void RealTimeArbiter::handleJumpCollision(std::shared_ptr<Piece> movingPiece)
+void RealTimeArbiter::handleJumpCollision(
+    std::shared_ptr<Piece> movingPiece)
 {
-    // הכלי המגיע נמחק מהלוח, הכלי הקופץ נשאר במקומו
     board.removePiece(activeMotion->source);
-    // התנועה בטלה (לא מעדכנים את הלוח ליעד כי המגיע הוסר)
+
+    activeJump->getPiece()->setState(
+        PieceState::IDLE);
+
+    activeJump.reset();
 }
 
 // בדיקת רגלי בשורת הסיום
@@ -138,8 +187,81 @@ bool RealTimeArbiter::hasActiveMotion() const
 {
     return activeMotion.has_value();
 }
-const std::optional<Motion>&
+const std::optional<Motion> &
 RealTimeArbiter::getActiveMotion() const
 {
     return activeMotion;
+}
+void RealTimeArbiter::handleStateTimerLogic(
+    int currentTime)
+{
+    if (!activeStateTimer.has_value())
+    {
+        return;
+    }
+
+    if (activeStateTimer->hasFinished(currentTime))
+    {
+        processStateTimerCompletion();
+    }
+}
+void RealTimeArbiter::processStateTimerCompletion()
+{
+    if (!activeStateTimer.has_value())
+    {
+        return;
+    }
+
+    activeStateTimer->getPiece()->setState(
+        activeStateTimer->getNextState());
+
+    activeStateTimer.reset();
+}
+void RealTimeArbiter::handleNextState(
+    std::shared_ptr<Piece> piece,
+    const PiecePhysics &physics,
+    int currentTime)
+{
+    std::cout
+        << "[State] "
+        << "Piece " << piece->getId()
+        << " -> SHORT_REST"
+        << std::endl;
+    // כרגע רק IDLE ו-REST
+    if (physics.nextState == PieceState::IDLE)
+    {
+        piece->setState(PieceState::IDLE);
+        return;
+    }
+
+    if (physics.nextState == PieceState::SHORT_REST ||
+        physics.nextState == PieceState::LONG_REST)
+    {
+        piece->setState(physics.nextState);
+
+        // כרגע זמן בדיקה.
+        // בשלב הבא יגיע מה-JSON.
+
+        PiecePhysics &restPhysics =
+            physicsManager.getPhysics(
+                piece->getType(),
+                piece->getSide(),
+                physics.nextState);
+        std::cout
+            << "[Rest Config] "
+            << "duration="
+            << restPhysics.restTimeMs
+            << std::endl;
+        activeStateTimer.emplace(
+            piece,
+            physics.nextState,
+            restPhysics.nextState,
+            currentTime,
+            restPhysics.restTimeMs);
+
+        return;
+    }
+
+    // כל מצב אחר
+    piece->setState(physics.nextState);
 }

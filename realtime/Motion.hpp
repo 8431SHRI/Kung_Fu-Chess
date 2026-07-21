@@ -2,6 +2,7 @@
 
 #include "Board.hpp"
 #include "Piece.hpp"
+
 #include <memory>
 
 class Motion
@@ -14,21 +15,24 @@ public:
 
     int startTime;
     int finishTime;
+    PieceState nextState;
 
     Motion(
         std::shared_ptr<Piece> piece,
         Position src,
         Position dst,
         int start,
-        int travelTime)
-        :
-        movingPiece(piece),
-        source(src),
-        destination(dst),
-        startTime(start),
-        finishTime(start + travelTime)
+        int travelTime,
+        PieceState next)
+        : movingPiece(piece),
+          source(src),
+          destination(dst),
+          startTime(start),
+          finishTime(start + travelTime),
+          nextState(next)
     {
     }
+    
 
     bool hasArrived(int currentTime) const
     {
@@ -37,10 +41,10 @@ public:
 
     double getProgress(int currentTime) const
     {
-        if(currentTime <= startTime)
+        if (currentTime <= startTime)
             return 0.0;
 
-        if(currentTime >= finishTime)
+        if (currentTime >= finishTime)
             return 1.0;
 
         return static_cast<double>(currentTime - startTime) /

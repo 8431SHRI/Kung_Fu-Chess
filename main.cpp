@@ -74,8 +74,9 @@ int main()
         // =========================
         // מנוע המשחק
         // =========================
+        PiecePhysicsManager physics("assets");
         RuleEngine ruleEngine;
-        RealTimeArbiter arbiter(board);
+        RealTimeArbiter arbiter(board, physics);
         GameEngine engine(board, ruleEngine, arbiter);
 
         // =========================

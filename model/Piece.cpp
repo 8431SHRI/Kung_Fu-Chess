@@ -6,7 +6,7 @@ std::string Piece::toCanonicalString() const
         (side == Side::WHITE) ? "w" : "b";
 
     return sideChar +
-        getTypeFolderName(type);
+           getTypeFolderName(type);
 }
 
 std::string Piece::getTypeFolderName(PieceType type)
@@ -64,6 +64,11 @@ std::string Piece::getStateFolderName(PieceState state)
 
     case PieceState::CAPTURED:
         return "captured";
+    case PieceState::SHORT_REST:
+        return "short_rest";
+
+    case PieceState::LONG_REST:
+        return "long_rest";
     }
 
     throw std::runtime_error("Unknown PieceState");

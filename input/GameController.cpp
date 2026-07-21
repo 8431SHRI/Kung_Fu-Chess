@@ -61,6 +61,11 @@ void GameController::click(
     {
         if (clickedPiece != nullptr)
         {
+            if (clickedPiece->getState() != PieceState::IDLE)
+            {
+                return;
+            }
+
             selection.select(pos);
 
             selection.setLegalMoves(
@@ -86,6 +91,12 @@ void GameController::click(
 
         selection.setLegalMoves(
             gameEngine.getLegalMoves(pos));
+    }
+    if (selectedPos == pos)
+    {
+        gameEngine.requestJump(pos);
+        selection.clear();
+        return;
     }
     else
     {
